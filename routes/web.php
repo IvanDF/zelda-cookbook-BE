@@ -15,6 +15,7 @@
 
 $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->get('/recipes', 'RecipeController@index');
+    $router->get('/recipes/{id}', 'RecipeController@show');
     $router->get('/ingredients', 'IngredientController@index');
     $router->get('/ingredient/{id}', 'IngredientController@show');
     $router->get('/stats', 'StatController@index');

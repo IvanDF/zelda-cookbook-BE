@@ -51,8 +51,8 @@ class StatController extends Controller
      */
     public function show($id)
     {
-            // Searcging ingredients from DB
-            $stat = DB::table('stats')
+        // Searcging stats from DB
+        $stat = DB::table('stats')
             ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration')
             ->where('stats.id', $id)
             ->get();

@@ -14,7 +14,7 @@ class StatTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i < 10; $i++) { 
+        for ($i=1; $i < 6; $i++) { 
             $stats = new Stat();
             $stats->type = "Tipo ". $i;
             $stats->points = 1;
