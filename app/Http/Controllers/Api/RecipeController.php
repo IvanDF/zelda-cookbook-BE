@@ -69,24 +69,25 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+        // Set request payload to $data
         $data = $request->all();
 
+        // Initialize Recipe model & set table cells
         $newRecipe = new Recipe;
         $newRecipe->name = $data['name'];
         $newRecipe->description = $data['description'];
         $newRecipe->stat_id = $data['stat_id'];
         
+        // Sae to DB
         $newRecipe->save();
-
-        // $ingredient = Ingredient::find(1);
-        // $ingredient->recipes()->attach($newRecipe->id);
-
+        
+        // Adding ingredients to pivot table 
         $recipe = Recipe::find($newRecipe->id);
         foreach ($data['ingredient_ids'] as $ingredient) {
             $newRecipe->ingredients()->attach($ingredient);
         }
 
-        return response()->json($recipe); 
+        return "suucess";
     }
 
     /**
