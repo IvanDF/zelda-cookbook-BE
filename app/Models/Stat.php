@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stat extends Model
 {
+    //MASS ASSIGNMENT
+       protected $fillable = [
+        'type',
+        'duration',
+        'points',
+        'hearts',
+    ];
+
     // Relazione del DB: STATS - RECIPES
     public function Recipes() {
         return $this->hasMany('App\Models\Recipe');

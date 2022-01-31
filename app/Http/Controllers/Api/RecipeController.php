@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Recipe;
+use App\Models\Ingredient;
 
 class RecipeController extends Controller
 {
@@ -22,47 +24,41 @@ class RecipeController extends Controller
             ->toArray();
 
         // Looping into recipes array
-        foreach ($recipes as $i => $recipe) {
-            
-            // Initializing & creating api response 
-            $response[] = (object) array(
-                "id" => $recipe->id,
-                "name" => $recipe->name,
-                "description" => $recipe->description,
-            );
-            
-            // Searching ingredients from DB
-            $ingredient_list = DB::table('recipe_ingredient')
-            ->join('ingredients', 'ingredients.id', '=', 'recipe_ingredient.ingredient_id')
-            ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description', 'recipe_ingredient.recipe_id as recipe_id')
-            ->where('recipe_id', $recipe->id)
-            ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description')
-            ->get()
-            ->toArray();
-            
-            // Searcging stats from DB
-            $stat = DB::table('stats')
-                ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration')
-                ->where('stats.id', $recipe->stat_id)
-                ->first();
-
-            // Creating ingredient arrays & stat objects for all recipes 
-            $response[$i]->ingredients = my_array_unique($ingredient_list);
-            $response[$i]->recipe_effect = (object)$stat;
+        if (!empty($recipes)) {
+            foreach ($recipes as $i => $recipe) {
+                
+                // Initializing & creating api response 
+                $response[] = (object) array(
+                    "id" => $recipe->id,
+                    "name" => $recipe->name,
+                    "description" => $recipe->description,
+                );
+                
+                // Searching ingredients from DB
+                $ingredient_list = DB::table('ingredient_recipe')
+                ->join('ingredients', 'ingredients.id', '=', 'ingredient_recipe.ingredient_id')
+                ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description', 'ingredient_recipe.recipe_id as recipe_id')
+                ->where('recipe_id', $recipe->id)
+                ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description')
+                ->get()
+                ->toArray();
+                
+                // Searcging stats from DB
+                $stat = DB::table('stats')
+                    ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration')
+                    ->where('stats.id', $recipe->stat_id)
+                    ->first();
+    
+                // Creating ingredient arrays & stat objects for all recipes 
+                $response[$i]->ingredients = my_array_unique($ingredient_list);
+                $response[$i]->recipe_effect = (object)$stat;
+            }
+            return response()->json($response); 
+        } else {
+            return []; 
         }
 
         // Return json array of recipes
-        return response()->json($response); 
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -73,7 +69,24 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $newRecipe = new Recipe;
+        $newRecipe->name = $data['name'];
+        $newRecipe->description = $data['description'];
+        $newRecipe->stat_id = $data['stat_id'];
+        
+        $newRecipe->save();
+
+        // $ingredient = Ingredient::find(1);
+        // $ingredient->recipes()->attach($newRecipe->id);
+
+        $recipe = Recipe::find($newRecipe->id);
+        foreach ($data['ingredient_ids'] as $ingredient) {
+            $newRecipe->ingredients()->attach($ingredient);
+        }
+
+        return response()->json($recipe); 
     }
 
     /**
@@ -98,9 +111,9 @@ class RecipeController extends Controller
         );
 
         // Searching ingredients from DB
-        $ingredient_list = DB::table('recipe_ingredient')
-            ->join('ingredients', 'ingredients.id', '=', 'recipe_ingredient.ingredient_id')
-            ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description', 'recipe_ingredient.recipe_id as recipe_id')
+        $ingredient_list = DB::table('ingredient_recipe')
+            ->join('ingredients', 'ingredients.id', '=', 'ingredient_recipe.ingredient_id')
+            ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description', 'ingredient_recipe.recipe_id as recipe_id')
             ->where('recipe_id', $id)
             ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description')
             ->get()

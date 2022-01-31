@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipe extends Model
 {
+    //MASS ASSIGNMENT
+       protected $fillable = [
+        'stat_id',
+        'name',
+        'description',
+    ];
+
     // Relazione del DB: RECIPES - INGREDIENTS 
     public function Ingredients() {
         return $this->belongsToMany('App\Models\Ingredient');

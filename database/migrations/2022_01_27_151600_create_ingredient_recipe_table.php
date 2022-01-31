@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRecipeIngredientTable extends Migration
+class CreateIngredientRecipeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRecipeIngredientTable extends Migration
      */
     public function up()
     {
-        Schema::create('recipe_ingredient', function (Blueprint $table) {
+        Schema::create('ingredient_recipe', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('recipe_id');
             $table->unsignedBigInteger('ingredient_id');

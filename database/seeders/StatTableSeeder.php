@@ -19,6 +19,7 @@ class StatTableSeeder extends Seeder
             $stats->type = "Tipo ". $i;
             $stats->points = 1;
             $stats->duration = 00.00;
+            $stats->hearts = $i;
 
             $stats->save();
         }
