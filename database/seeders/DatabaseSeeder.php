@@ -8,15 +8,13 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run()
     {
         $this->call([
             // RecipesTableSeeder::class,
-            IngredientTableSeeder::class,
-            StatTableSeeder::class
+            // IngredientTableSeeder::class,
+            // StatTableSeeder::class
         ]);
     }
 }

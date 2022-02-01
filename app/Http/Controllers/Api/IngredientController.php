@@ -11,8 +11,6 @@ class IngredientController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -26,9 +24,6 @@ class IngredientController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -36,7 +31,7 @@ class IngredientController extends Controller
         /************************************************
          * DA AGGIUNGERE IL CHECK "ESISTE GIÀ"
         ************************************************/
-        
+
         $data = $request->all();
 
         // Initialize Ingredient model & set table cells
@@ -52,9 +47,6 @@ class IngredientController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -68,10 +60,6 @@ class IngredientController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $ingredient_id)
     {
@@ -85,9 +73,6 @@ class IngredientController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($ingredient_id)
     {

@@ -12,8 +12,6 @@ class RecipeController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -61,13 +59,10 @@ class RecipeController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        
+
         /************************************************
          * DA AGGIUNGERE IL CHECK "ESISTE GIÀ"
         ************************************************/
@@ -95,9 +90,6 @@ class RecipeController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -139,10 +131,6 @@ class RecipeController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $recipe_id)
     {
@@ -162,9 +150,6 @@ class RecipeController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($recipe_id)
     {
@@ -175,28 +160,30 @@ class RecipeController extends Controller
     }
 }
 
- // Counting quantity of ingredients
- function count_array_values($my_array, $match) 
- { 
-     $count = 0; 
-     
-     foreach ($my_array as $key => $value) 
-     { 
-         if ($value->id == $match) 
-         { 
-             $count++; 
-         } 
-     }
-     
-     return $count; 
- }
+// Counting quantity of ingredients
+function count_array_values($my_array, $match) 
+{ 
+    $count = 0; 
+    
+    foreach ($my_array as $key => $value) 
+    { 
+        if ($value->id == $match) 
+        { 
+            $count++; 
+        } 
+    }
+    
+    return $count; 
+}
 
 // Adding quantity value and remove duplicate objects
-function my_array_unique($array, $keep_key_assoc = false){
+function my_array_unique($array, $keep_key_assoc = false)
+{
     $duplicate_keys = array();
     $tmp = array();
 
-    foreach ($array as $key => $val){
+    foreach ($array as $key => $val)
+    {
         // Adding quantity value ->
         $val->quantity = count_array_values($array, $val->id);
 

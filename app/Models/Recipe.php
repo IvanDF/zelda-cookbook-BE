@@ -14,12 +14,12 @@ class Recipe extends Model
         'description',
     ];
 
-    // Relazione del DB: RECIPES - INGREDIENTS 
+    // Relation: RECIPES - INGREDIENTS 
     public function Ingredients() {
         return $this->belongsToMany('App\Models\Ingredient');
     }
 
-    // Relazione del DB: RECIPES - STATS
+    // Relation: RECIPES - STATS
     public function Stats() {
         return $this->belongsTo('App\Models\Stat');
     }

@@ -15,7 +15,7 @@ class Stat extends Model
         'hearts',
     ];
 
-    // Relazione del DB: STATS - RECIPES
+    // Relation: STATS - RECIPES
     public function Recipes() {
         return $this->hasMany('App\Models\Recipe');
     }

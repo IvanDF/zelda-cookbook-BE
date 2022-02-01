@@ -8,8 +8,6 @@ class CreateRecipesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -19,18 +17,11 @@ class CreateRecipesTable extends Migration
             $table->string("name", 100);
             $table->string("description", 255);
             $table->timestamps();
-
-            // //Relazione RECIPE - STAT
-            // $table->foreign('stat_id')
-            //     ->references('id')
-            //     ->on('stats');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
