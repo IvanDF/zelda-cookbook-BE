@@ -16,13 +16,13 @@ class CreateIngredientRecipeTable extends Migration
             $table->unsignedBigInteger('recipe_id');
             $table->unsignedBigInteger('ingredient_id');
 
-            //Relazione RECIPE - INGREDIENT
+            //Relation: RECIPE - INGREDIENT
             $table->foreign('recipe_id')
             ->references('id')
             ->on('recipes')
             ->onDelete('cascade');
 
-            //Relazione INGREDIENT - RECIPE
+            //Relation: INGREDIENT - RECIPE
             $table->foreign('ingredient_id')
             ->references('id')
             ->on('ingredients')
