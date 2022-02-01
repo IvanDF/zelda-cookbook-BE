@@ -36,12 +36,12 @@ class RecipeController extends Controller
                 
                 // Searching ingredients from DB
                 $ingredient_list = DB::table('ingredient_recipe')
-                ->join('ingredients', 'ingredients.id', '=', 'ingredient_recipe.ingredient_id')
-                ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description', 'ingredient_recipe.recipe_id as recipe_id')
-                ->where('recipe_id', $recipe->id)
-                ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description')
-                ->get()
-                ->toArray();
+                    ->join('ingredients', 'ingredients.id', '=', 'ingredient_recipe.ingredient_id')
+                    ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description', 'ingredient_recipe.recipe_id as recipe_id')
+                    ->where('recipe_id', $recipe->id)
+                    ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description')
+                    ->get()
+                    ->toArray();
                 
                 // Searcging stats from DB
                 $stat = DB::table('stats')
@@ -57,8 +57,6 @@ class RecipeController extends Controller
         } else {
             return []; 
         }
-
-        // Return json array of recipes
     }
 
     /**
@@ -69,6 +67,11 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+        
+        /************************************************
+         * DA AGGIUNGERE IL CHECK "ESISTE GIÀ"
+        ************************************************/
+
         // Set request payload to $data
         $data = $request->all();
 
@@ -135,26 +138,26 @@ class RecipeController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $recipe_id)
     {
-        //
+        $data = $request->all();
+
+        $recipe = Recipe::find($recipe_id);
+        $recipe->update($data);
+
+        // Adding ingredients to pivot table 
+        $recipe->ingredients()->detach();
+        foreach ($data['ingredient_ids'] as $ingredient) {
+            $recipe->ingredients()->attach($ingredient);
+        }
+
+        return "success";
     }
 
     /**
@@ -163,9 +166,12 @@ class RecipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($recipe_id)
     {
-        //
+        $recipe = Recipe::find($recipe_id);
+        $recipe->delete();
+
+        return "success";
     }
 }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Stat;
 
 class StatController extends Controller
 {
@@ -23,16 +24,6 @@ class StatController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -40,7 +31,24 @@ class StatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        /************************************************
+         * DA AGGIUNGERE IL CHECK "ESISTE GIÀ"
+        ************************************************/
+
+        $data = $request->all();
+
+        // Initialize Stat model & set table cells
+        $newStat = new Stat;
+        $newStat->type = $data['type'];
+        $newStat->duration = $data['duration'];
+        $newStat->points = $data['points'];
+        $newStat->hearts = $data['hearts'];
+        
+        // Sae to DB
+        $newStat->save();
+
+        return "success";
     }
 
     /**
@@ -61,26 +69,20 @@ class StatController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $stat_id)
     {
-        //
+        $data = $request->all();
+
+        $stat = Stat::find($stat_id);
+        $stat->update($data);
+
+        return "success";
     }
 
     /**
@@ -89,50 +91,11 @@ class StatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($stat_id)
     {
-        //
+        $stat = Stat::find($stat_id);
+        $stat->delete();
+
+        return "success";
     }
-}
-
- // Counting quantity of ingredients
- function count_array_values($my_array, $match) 
- { 
-     $count = 0; 
-     
-     foreach ($my_array as $key => $value) 
-     { 
-         if ($value->id == $match) 
-         { 
-             $count++; 
-         } 
-     }
-     
-     return $count; 
- }
-
-// Adding quantity value and remove duplicate objects
-function my_array_unique($array, $keep_key_assoc = false){
-    $duplicate_keys = array();
-    $tmp = array();
-
-    foreach ($array as $key => $val){
-        // Adding quantity value ->
-        $val->quantity = count_array_values($array, $val->id);
-
-        // remove duplicate objects ->
-        // convert objects to arrays, in_array() does not support objects
-        if (is_object($val))
-            $val = (array)$val;
-
-        if (!in_array($val, $tmp))
-            $tmp[] = $val;
-        else
-            $duplicate_keys[] = $key;
-    }
-
-    foreach ($duplicate_keys as $key)
-        unset($array[$key]);
-
-    return $keep_key_assoc ? $array : array_values($array);
 }

@@ -11,7 +11,6 @@ class Ingredient extends Model
     protected $fillable = [
         'name',
         'description',
-        'quantity',
     ];
 
     // Relazione del DB: INGREDIENT - RECIPE

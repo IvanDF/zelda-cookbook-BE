@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Ingredient;
 
 class IngredientController extends Controller
 {
@@ -24,16 +25,6 @@ class IngredientController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -41,8 +32,22 @@ class IngredientController extends Controller
      */
     public function store(Request $request)
     {
+
+        /************************************************
+         * DA AGGIUNGERE IL CHECK "ESISTE GIÀ"
+        ************************************************/
+        
         $data = $request->all();
-        return response()->json($data);
+
+        // Initialize Ingredient model & set table cells
+        $newIngredient = new Ingredient;
+        $newIngredient->name = $data['name'];
+        $newIngredient->description = $data['description'];
+        
+        // Sae to DB
+        $newIngredient->save();
+
+        return "success";
     }
 
     /**
@@ -62,26 +67,20 @@ class IngredientController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $ingredient_id)
     {
-        //
+        $data = $request->all();
+
+        $ingredient = Ingredient::find($ingredient_id);
+        $ingredient->update($data);
+
+        return "success";
     }
 
     /**
@@ -90,50 +89,11 @@ class IngredientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($ingredient_id)
     {
-        //
+        $ingredient = Ingredient::find($ingredient_id);
+        $ingredient->delete();
+
+        return "success";
     }
-}
-
- // Counting quantity of ingredients
- function count_array_values($my_array, $match) 
- { 
-     $count = 0; 
-     
-     foreach ($my_array as $key => $value) 
-     { 
-         if ($value->id == $match) 
-         { 
-             $count++; 
-         } 
-     }
-     
-     return $count; 
- }
-
-// Adding quantity value and remove duplicate objects
-function my_array_unique($array, $keep_key_assoc = false){
-    $duplicate_keys = array();
-    $tmp = array();
-
-    foreach ($array as $key => $val){
-        // Adding quantity value ->
-        $val->quantity = count_array_values($array, $val->id);
-
-        // remove duplicate objects ->
-        // convert objects to arrays, in_array() does not support objects
-        if (is_object($val))
-            $val = (array)$val;
-
-        if (!in_array($val, $tmp))
-            $tmp[] = $val;
-        else
-            $duplicate_keys[] = $key;
-    }
-
-    foreach ($duplicate_keys as $key)
-        unset($array[$key]);
-
-    return $keep_key_assoc ? $array : array_values($array);
 }
