@@ -85,7 +85,12 @@ class RecipeController extends Controller
             $newRecipe->ingredients()->attach($ingredient);
         }
 
-        return "suucess";
+        $response = (object) [
+            'status' => 'Recipe created successfully',
+            'info' => $data
+        ];
+
+        return response()->json($response);
     }
 
     /**
@@ -145,7 +150,12 @@ class RecipeController extends Controller
             $recipe->ingredients()->attach($ingredient);
         }
 
-        return "success";
+        $response = (object) [
+            'status' => 'Recipe updated successfully',
+            'info' => $data
+        ];
+
+        return response()->json($response);
     }
 
     /**
@@ -156,7 +166,11 @@ class RecipeController extends Controller
         $recipe = Recipe::find($recipe_id);
         $recipe->delete();
 
-        return "success";
+        $response = (object) [
+            'status' => 'Recipe deleted successfully',
+        ];
+
+        return response()->json($response);
     }
 }
 
