@@ -16,7 +16,9 @@ class StatController extends Controller
     {
         // Searcging ingredients from DB
         $stats = DB::table('stats')
-            ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration')->get()->toArray();
+            ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration', 'stats.image')
+            ->get()
+            ->toArray();
  
         return response()->json($stats); 
     }
@@ -39,6 +41,7 @@ class StatController extends Controller
         $newStat->duration = $data['duration'];
         $newStat->points = $data['points'];
         $newStat->hearts = $data['hearts'];
+        $newStat->image = $data['image'];
         
         // Sae to DB
         $newStat->save();
@@ -53,7 +56,7 @@ class StatController extends Controller
     {
         // Searcging stats from DB
         $stat = DB::table('stats')
-            ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration')
+            ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration', 'stats.image')
             ->where('stats.id', $id)
             ->get();
  

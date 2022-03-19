@@ -12,6 +12,7 @@ class Recipe extends Model
         'stat_id',
         'name',
         'description',
+        'image',
     ];
 
     // Relation: RECIPES - INGREDIENTS 

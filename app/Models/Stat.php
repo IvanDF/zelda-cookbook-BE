@@ -13,6 +13,7 @@ class Stat extends Model
         'duration',
         'points',
         'hearts',
+        'image',
     ];
 
     // Relation: STATS - RECIPES

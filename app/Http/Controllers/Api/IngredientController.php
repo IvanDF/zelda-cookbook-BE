@@ -16,7 +16,7 @@ class IngredientController extends Controller
     {
         // Searcging ingredients from DB
         $ingredients = DB::table('ingredients')
-            ->select('ingredients.id', 'ingredients.name', 'ingredients.description')->get()->toArray();
+            ->select('ingredients.id', 'ingredients.name', 'ingredients.description', 'image')->get()->toArray();
 
         return response()->json($ingredients);
  
@@ -38,6 +38,8 @@ class IngredientController extends Controller
         $newIngredient = new Ingredient;
         $newIngredient->name = $data['name'];
         $newIngredient->description = $data['description'];
+        $newIngredient->image = $data['image'];
+
         
         // Sae to DB
         $newIngredient->save();
@@ -51,7 +53,7 @@ class IngredientController extends Controller
     public function show($id)
     {
         $ingredient = DB::table('ingredients')
-            ->select('ingredients.id', 'ingredients.name', 'ingredients.description')
+            ->select('ingredients.id', 'ingredients.name', 'ingredients.description', 'ingredients.image')
             ->where('ingredients.id', $id)
             ->get();
 

@@ -17,7 +17,7 @@ class RecipeController extends Controller
     {
         // Searcging recipes from DB
         $recipes = DB::table('recipes')
-            ->select('recipes.id', 'recipes.name', 'recipes.description', 'recipes.stat_id')
+            ->select('recipes.id', 'recipes.name', 'recipes.description', 'recipes.stat_id', 'recipes.image')
             ->get()
             ->toArray();
 
@@ -30,6 +30,7 @@ class RecipeController extends Controller
                     "id" => $recipe->id,
                     "name" => $recipe->name,
                     "description" => $recipe->description,
+                    "image" => $recipe->image,
                 );
                 
                 // Searching ingredients from DB
@@ -37,13 +38,13 @@ class RecipeController extends Controller
                     ->join('ingredients', 'ingredients.id', '=', 'ingredient_recipe.ingredient_id')
                     ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description', 'ingredient_recipe.recipe_id as recipe_id')
                     ->where('recipe_id', $recipe->id)
-                    ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description')
+                    ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description', 'ingredient_recipe.recipe_id as recipe_id')
                     ->get()
                     ->toArray();
                 
                 // Searcging stats from DB
                 $stat = DB::table('stats')
-                    ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration')
+                    ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration', 'stats.image')
                     ->where('stats.id', $recipe->stat_id)
                     ->first();
     
@@ -74,6 +75,7 @@ class RecipeController extends Controller
         $newRecipe = new Recipe;
         $newRecipe->name = $data['name'];
         $newRecipe->description = $data['description'];
+        $newRecipe->image = $data['image'];
         $newRecipe->stat_id = $data['stat_id'];
         
         // Sae to DB
@@ -100,7 +102,7 @@ class RecipeController extends Controller
     {
         // Searcging recipes from DB
         $recipe = DB::table('recipes')
-            ->select('recipes.id', 'recipes.name', 'recipes.description', 'recipes.stat_id')
+            ->select('recipes.id', 'recipes.name', 'recipes.description', 'recipes.stat_id', 'recipes.image')
             ->where('recipes.id', $id)
             ->first();
         
@@ -109,6 +111,7 @@ class RecipeController extends Controller
             "id" => $recipe->id,
             "name" => $recipe->name,
             "description" => $recipe->description,
+            "image" => $recipe->image,
         );
 
         // Searching ingredients from DB
@@ -116,13 +119,13 @@ class RecipeController extends Controller
             ->join('ingredients', 'ingredients.id', '=', 'ingredient_recipe.ingredient_id')
             ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description', 'ingredient_recipe.recipe_id as recipe_id')
             ->where('recipe_id', $id)
-            ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description')
+            ->select('ingredients.id as id', 'ingredients.name as name', 'ingredients.description as description', 'ingredients.image as image')
             ->get()
             ->toArray();
 
         // Searcging stats from DB
         $stat = DB::table('stats')
-            ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration')
+            ->select('stats.id', 'stats.type', 'stats.points', 'stats.duration', 'stats.image')
             ->where('stats.id', $recipe->stat_id)
             ->first();
 

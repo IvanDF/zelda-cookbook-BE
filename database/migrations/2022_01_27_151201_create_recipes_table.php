@@ -16,6 +16,7 @@ class CreateRecipesTable extends Migration
             $table->unsignedBigInteger('stat_id');
             $table->string("name", 100);
             $table->string("description", 255);
+            $table->longText("image");
             $table->timestamps();
         });
     }

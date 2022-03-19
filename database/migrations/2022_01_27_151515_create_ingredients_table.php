@@ -15,6 +15,7 @@ class CreateIngredientsTable extends Migration
             $table->id();
             $table->string("name", 50);
             $table->string("description", 255);
+            $table->longText("image");
             $table->timestamps();
         });
     }

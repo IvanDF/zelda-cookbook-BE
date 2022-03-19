@@ -17,6 +17,7 @@ class CreateStatsTable extends Migration
             $table->double("duration", 2.2);
             $table->string("points", 1);
             $table->string("hearts", 2);
+            $table->longText("image");
             $table->timestamps();
         });
     }
